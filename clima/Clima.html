@@ -1,100 +1,113 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <title>Clima</title>
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #dfe8ff;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .fundo {
-      width: 420px;
-      padding: 25px;
-      text-align: center;
-      background: #ffffff;
-      border: 2px solid #4b3f9f;
-      border-radius: 12px;
-    }
-
-    .titulo, .aluno {
-      border: 2px solid #4b3f9f;
-      border-radius: 8px;
-      padding: 14px;
-      background: #c7d2fe;
-      color: #312e81;
-      font-weight: bold;
-    }
-
-    .titulo {
-      font-size: 28px;
-      margin-bottom: 30px;
-    }
-
-    .medidores {
-      display: flex;
-      justify-content: space-around;
-      margin-bottom: 30px;
-    }
-
-    .circulo {
-      width: 110px;
-      height: 110px;
-      border: 3px solid #6d28d9;
-      border-radius: 50%;
-      background: #ede9fe;
-      color: #1e3a8a;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 26px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    .identificacao {
-      color: #312e81;
-      font-size: 18px;
-      font-weight: bold;
-    }
-
-    .aluno {
-      font-size: 18px;
-    }
-  </style>
 </head>
+
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #dfe8ff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .fundo {
+    width: 420px;
+    padding: 25px;
+    text-align: center;
+    background: #ffffff;
+    border: 2px solid #4b3f9f;
+    border-radius: 12px;
+  }
+
+  .titulo,
+  .aluno {
+    border: 2px solid #4b3f9f;
+    border-radius: 8px;
+    padding: 14px;
+    background: #c7d2fe;
+    color: #312e81;
+    font-weight: bold;
+  }
+
+  .titulo {
+    font-size: 28px;
+    margin-bottom: 30px;
+  }
+
+  .medidores {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+  }
+
+  .circulo {
+    width: 110px;
+    height: 110px;
+    border: 3px solid #6d28d9;
+    border-radius: 50%;
+    background: #ede9fe;
+    color: #1e3a8a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .identificacao {
+    color: #312e81;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .aluno {
+    font-size: 18px;
+  }
+</style>
 
 <body>
 
   <div class="fundo">
 
-    <div class="titulo">Clima</div>
+    <header class="titulo">Clima</header> <!--header cabeçalho automático  -->
 
     <div class="medidores">
       <div>
-        <div class="circulo">17°C</div>
+        <div class="circulo">
+          <span id="valorTemperatura">17</span>
+          <!--texto que oucupa apenas seu espaço, não sendo uma caixa que nem a div que oucupa tudo  -->
+          <span>°C</span>
+        </div>
         <div class="identificacao">Temperatura</div>
+        <div class="identificacao" id="portaTemperatura">PID 4</div>
       </div>
 
       <div>
-        <div class="circulo">58%</div>
+        <div class="circulo">
+          <span id="valorUmidade">67</span>
+          <span>%</span>
+        </div>
         <div class="identificacao">Umidade</div>
+        <div class="identificacao" id="portaUmidade">PID 5</div>
       </div>
     </div>
 
-    <div class="aluno">
+
+    <footer class="aluno">
       TAÍS CAROLINE ENGE<br>
       2026
-    </div>
+    </footer> <!--footer rodapé automático  -->
 
   </div>
 
 </body>
+
 </html>
