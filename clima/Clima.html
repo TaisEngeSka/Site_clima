@@ -1,4 +1,19 @@
-<!DOCTYPE html>
+#include <DHT.h>
+
+#include <WiFi.h>       // Troque conforme sua placa
+
+
+#define DHTPIN    4         // Pino DATA do sensor (GPIO4 no ESP32)
+#define DHTTYPE   DHT22     // DHT11 ou DHT22
+
+const char* WIFI_SSID = "SEU_WIFI";
+const char* WIFI_PASS = "SUA_SENHA";
+// ────────────────────────────────────────────────────────────────
+
+DHT dht(DHTPIN, DHTTYPE);
+WiFiServer server(80);
+
+const char HTML_PAGE[] PROGMEM = R"rawliteral(<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
@@ -77,37 +92,84 @@
 
   <div class="fundo">
 
-    <header class="titulo">Clima</header> <!--header cabeçalho automático  -->
-
+    <header class="titulo">Clima</header> 
     <div class="medidores">
       <div>
         <div class="circulo">
-          <span id="valorTemperatura">17</span>
-          <!--texto que oucupa apenas seu espaço, não sendo uma caixa que nem a div que oucupa tudo  -->
+          <span >%%valorTemperatura%%</span>
           <span>°C</span>
         </div>
         <div class="identificacao">Temperatura</div>
-        <div class="identificacao" id="portaTemperatura">PID 4</div>
+        <div class="identificacao">%%portaTemperatura%%</div>
       </div>
 
       <div>
         <div class="circulo">
-          <span id="valorUmidade">67</span>
+          <span >%%valorUmidade%%</span>
           <span>%</span>
         </div>
         <div class="identificacao">Umidade</div>
-        <div class="identificacao" id="portaUmidade">PID 5</div>
+        <div class="identificacao">%%portaUmidade%%</div>
       </div>
     </div>
-
 
     <footer class="aluno">
       TAÍS CAROLINE ENGE<br>
       2026
-    </footer> <!--footer rodapé automático  -->
+    </footer>
 
   </div>
 
 </body>
 
-</html>
+</html>) rawliteral";
+
+String atualizarHTML (float umidade, float temperatura){
+  String html = String(HTML_PAGE);
+
+  html.replace ("%%valorUmidade%%", String (umidade) );
+  html.replace ("%%valorTemperatura%%", String (temperatura) );
+
+  return html;
+}
+
+void setup() {
+  Serial.begin(115200);
+  dht.begin();
+
+  Serial.print("\nConectando ao WiFi");
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("\nWiFi conectado!");
+  Serial.print("Acesse: http://");
+  Serial.println(WiFi.localIP());
+
+  server.begin();
+}
+
+void loop() {
+  WiFiClient client = server.available();
+  if (!client) return;
+
+ 
+  // Lê os valores do sensor
+  float temperatura = dht.readTemperature();
+  float umidade     = dht.readHumidity();
+
+  Serial.printf("Temp: %.1f°C | Umidade: %.1f%%\n", temperatura, umidade);
+
+  // Monta e envia a resposta HTTP
+  String html = atualizarHtml(umidade,temperatura);
+
+  client.println("HTTP/1.1 200 OK");
+  client.println();
+  client.print(html);
+
+  
+  delay(100);
+  client.stop();
+}
